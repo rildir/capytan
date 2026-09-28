@@ -37,6 +37,14 @@ body { background: #211f1b; color: #211f1b; overflow: hidden; touch-action: none
   background: #fff3d7; font-size: 15px; line-height: 1.4; white-space: pre-line; }
 #status.failed .lane, #status.failed .meter { display: none; }
 #status.failed #status-notice { display: block; }
+#status-trail { display: none; margin-top: 10px; font-size: 13px; line-height: 1.35; }
+#status-trail pre { margin: 6px 0; padding: 7px 8px; border: 2px solid #211f1b; border-radius: 8px; background: #fff3d7;
+  font: 10px/1.3 ui-monospace, Menlo, Consolas, monospace; white-space: pre; overflow: auto; max-height: 60vh; }
+#status-trail button { margin-top: 4px; padding: 7px 18px; border: 2px solid #211f1b; border-radius: 8px; background: #211f1b;
+  color: #f3e8cc; font: 700 14px "Trebuchet MS", system-ui, sans-serif; letter-spacing: .08em; }
+#status.trail #status-trail { display: block; }
+#status.trail .tag, #status.trail .lane, #status.trail .meter { display: none; }
+#status.trail .wordmark { max-height: 8vh; }
 </style>
 <link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
@@ -56,17 +64,109 @@ body { background: #211f1b; color: #211f1b; overflow: hidden; touch-action: none
     </div>
     <div class="meter"><span id="status-percent"></span><span id="status-line"></span></div>
     <div id="status-notice"></div>
+    <div id="status-trail"><div id="status-trail-head"></div><pre></pre><button type="button" id="status-go"></button></div>
   </div>
 </div>
 <script src="chunk-loader.js"></script><script src="index.js"></script>
 <script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":111506680,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":111508748,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
 (function () {
   const turkish = (navigator.language || '').toLowerCase().startsWith('tr');
   document.documentElement.lang = turkish ? 'tr' : 'en';
+
+  // A PHONE DRAWS AT TWICE ITS CSS PIXELS, NOT THREE TIMES (2026-09-28).
+  // An iPhone reports a pixel ratio of 3: the game then renders 2532 x 1170
+  // pixels for a 844 x 390 page, and every frame, render target and glyph
+  // cache is sized to that. At 2 the art and the text are still drawn above
+  // their own resolution (the floor is laid out at 1280 x 720), for less
+  // than half the pixels - less memory on the phone that reloads the page
+  // when it runs out, and less work for its GPU. Desktops keep their ratio.
+  const nativeRatio = window.devicePixelRatio || 1;
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches && nativeRatio > 2) {
+    try { window.devicePixelRatio = 2; } catch (e) { /* [Replaceable]: a plain assignment */ }
+  }
+
+  // THE CRASH TRAIL (2026-09-28; scripts/WebCrumbs.gd). An iPhone that runs
+  // out of room ends the page's process and the browser loads it again,
+  // silently. The game hands this page a line a second - the screen, the
+  // frame rate, what it holds - and the page keeps the last minute of them
+  // here. A pagehide marks the exit as clean; a load that finds a trail
+  // without one shows it on this card before the game starts, for a
+  // screenshot. Nothing leaves the phone. #iz shows the last one again.
+  const trail = (function () {
+    const KEY = 'capy.trail', LAST = 'capy.trail.crash';
+    let store = null;
+    try { store = window.localStorage; } catch (e) {}
+    const read = (key) => { try { return JSON.parse(store.getItem(key) || 'null'); } catch (e) { return null; } };
+    let prev = read(KEY);
+    if (!(prev && !prev.clean && prev.rows && prev.rows.length)) prev = null;
+    if (prev) { prev.found = Date.now(); try { store.setItem(LAST, JSON.stringify(prev)); } catch (e) {} }
+    else if (location.hash === '#iz') prev = read(LAST);
+    const now = {start: Date.now(), clean: false, ua: navigator.userAgent, scr: screen.width + 'x' + screen.height,
+      ratio: nativeRatio + (window.devicePixelRatio !== nativeRatio ? '>' + window.devicePixelRatio : ''), rows: [], ev: []};
+    const save = () => { try { store.setItem(KEY, JSON.stringify(now)); } catch (e) {} };
+    const since = () => Math.round((Date.now() - now.start) / 100) / 10;
+    const note = (what) => { now.ev.push([since(), what]); if (now.ev.length > 30) now.ev.shift(); save(); };
+    let memory = null;
+    const grab = (result) => {
+      try { const exports = (result.instance || result).exports; for (const k in exports) if (exports[k] instanceof WebAssembly.Memory) memory = exports[k]; } catch (e) {}
+      return result;
+    };
+    const instantiate = WebAssembly.instantiate, streaming = WebAssembly.instantiateStreaming;
+    WebAssembly.instantiate = function () { return instantiate.apply(this, arguments).then(grab); };
+    if (streaming) WebAssembly.instantiateStreaming = function () { return streaming.apply(this, arguments).then(grab); };
+    let buffers = 0;
+    if (window.WebGL2RenderingContext) {
+      const create = WebGL2RenderingContext.prototype.createBuffer;
+      WebGL2RenderingContext.prototype.createBuffer = function () { buffers++; return create.call(this); };
+    }
+    let lastFrame = 0, worstGap = 0;
+    const frame = (ts) => { if (lastFrame) worstGap = Math.max(worstGap, ts - lastFrame); lastFrame = ts; requestAnimationFrame(frame); };
+    requestAnimationFrame(frame);
+    const canvas = document.getElementById('canvas');
+    window.capyCrumb = (row) => {
+      row.t = since();
+      row.wasm = memory ? Math.round(memory.buffer.byteLength / 1048576) : 0;
+      row.gap = Math.round(worstGap); worstGap = 0;
+      row.glb = buffers; buffers = 0;
+      row.cv = canvas.width + 'x' + canvas.height;
+      now.rows.push(row); if (now.rows.length > 60) now.rows.shift();
+      save();
+    };
+    addEventListener('pagehide', () => { now.clean = true; save(); });
+    addEventListener('pageshow', (ev) => { if (ev.persisted) { now.clean = false; note('pageshow'); } });
+    document.addEventListener('visibilitychange', () => note(document.visibilityState));
+    addEventListener('resize', () => note('resize ' + innerWidth + 'x' + innerHeight));
+    canvas.addEventListener('webglcontextlost', () => note('webgl lost'));
+    save();
+    return {prev: prev};
+  }());
+
+  // the previous session's last minute, as a table for the screenshot
+  function trailText(p) {
+    const rows = p.rows, last = rows[rows.length - 1];
+    const os = (/OS (\d+[_\d]*)/.exec(p.ua) || [, '?'])[1].replace(/_/g, '.');
+    const app = (/(CriOS|OPiOS|OPT|FxiOS|EdgiOS)\/[\d.]+/.exec(p.ua) || /Version\/[\d.]+/.exec(p.ua) || [''])[0];
+    const pad = (v, n) => String(v).padStart(n), left = (v, n) => String(v).padEnd(n).slice(0, n);
+    const out = [];
+    out.push((turkish ? 'cihaz: iOS ' : 'device: iOS ') + os + ' · ' + app + ' · ' + p.scr + ' @' + p.ratio + ' · ' + (last.cv || ''));
+    const path = [];
+    for (const r of rows) if (!path.length || path[path.length - 1][1] !== r.ph) path.push([r.t, r.ph]);
+    out.push(path.slice(-6).map((x) => x[1] + ' (' + x[0] + ')').join(' > '));
+    const gap = p.found ? Math.round((p.found - p.start) / 1000 - last.t) : '?';
+    out.push((turkish ? 'son kayıttan yeni yüklemeye: ' : 'last line to this load: ') + gap + (turkish ? ' sn' : ' s'));
+    out.push('');
+    out.push(left('sn', 6) + left(turkish ? 'ekran' : 'screen', 13) + pad('fps', 4) + pad('gap', 6) + pad('wasm', 6) + pad('tex', 6) + pad('buf', 5) + pad('draw', 6) + pad('glb', 6) + pad('nodes', 7) + pad('objs', 7));
+    for (const r of rows.slice(-8)) {
+      out.push(left(r.t, 6) + left(r.ph, 13) + pad(r.fps, 4) + pad(r.gap, 6) + pad(r.wasm, 6) + pad(Math.round(r.tex), 6) + pad(Math.round(r.buf), 5) + pad(r.dc, 6) + pad(r.glb, 6) + pad(r.nodes, 7) + pad(r.objs, 7));
+    }
+    if (p.ev && p.ev.length) out.push('', p.ev.slice(-6).map((e) => e[0] + ' ' + e[1]).join(' · '));
+    return out.join('\n');
+  }
+
   const LINES = turkish ? [
     'Hayaletler çarşafları katlıyor…', 'Resepsiyon zili parlatılıyor…', 'Portakal sayılıyor: bir, bir.',
     'Bavullar asansöre taşınıyor…', 'Orkestra akort ediyor…', 'Capytan portakalını düzeltiyor…',
@@ -141,7 +241,22 @@ const engine = new Engine(GODOT_CONFIG);
     }
   } else {
     setProgress(0, 0);
-    engine.startGame({ 'onProgress': setProgress }).then(finish, fail);
+    let ready = Promise.resolve();
+    if (trail.prev) {
+      // the game loads behind the card; the card stays until DEVAM
+      const box = document.getElementById('status-trail');
+      document.getElementById('status-trail-head').textContent = turkish
+        ? 'Oyun geçen sefer beklenmedik şekilde kapandı. Bu kartın ekran görüntüsünü gönderir misin? Telefonun son dakikası aşağıda.'
+        : 'The game closed unexpectedly last time. Could you send a screenshot of this card? The phone\'s last minute is below.';
+      const table = box.querySelector('pre');
+      table.textContent = trailText(trail.prev);
+      const go = document.getElementById('status-go');
+      go.textContent = turkish ? 'DEVAM' : 'CONTINUE';
+      status.classList.add('trail');
+      table.scrollTop = table.scrollHeight;
+      ready = new Promise((resolve) => { go.onclick = () => { status.classList.remove('trail'); resolve(); }; });
+    }
+    engine.startGame({ 'onProgress': setProgress }).then(() => ready).then(finish, fail);
   }
 }());
 </script>
