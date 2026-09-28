@@ -5,12 +5,12 @@
     "web"
   ],
   "web_version": "0.1.15",
-  "web_source_commit": "0ef7146dbe45ce07cde66827afec8a08daec9b17",
-  "web_pck_sha256": "24521a9ce4bfac78b2ac07024a7a5350c416ad1458b885e33a23d0e2f9e827b5",
+  "web_source_commit": "d1310277d9816297bac02b0b6020b7dcc05541de",
+  "web_pck_sha256": "38979f6f6987bbc53861a0083057f26f33b462909a5b960620a642b7b0b947e7",
   "web_wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
   "godot_version": "4.7.2.stable.official.ed1daf0bf",
   "android": "not published on this site",
-  "prepared_utc": "2026-09-28T09:35:08.715813+00:00",
+  "prepared_utc": "2026-09-28T10:16:45.542426+00:00",
   "web_source_state": "Exact committed runtime files; the working tree differed only in line endings and the order of one project setting",
   "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only"
 }
