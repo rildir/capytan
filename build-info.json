@@ -1,0 +1,15 @@
+{
+  "name": "CAPYTAN",
+  "version": "0.1.15",
+  "updated_platforms": [
+    "web"
+  ],
+  "web_version": "0.1.15",
+  "web_source_commit": "36c617a5c53bc92f624b3a9a1b3bf248bf720912",
+  "web_pck_sha256": "4fd3280b355cc5919ed12b2eed9818f27b356baf7a728f170a67070afa6f6bf9",
+  "web_wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+  "godot_version": "4.7.2.stable.official.ed1daf0bf",
+  "web_copied_from": "yido17/capyclysm-mobile-test d8ecc59, play/ byte for byte",
+  "android": "not published on this site",
+  "prepared_utc": "2026-09-28T08:06:20.651718+00:00"
+}
