@@ -1,16 +1,17 @@
 {
   "name": "CAPYTAN",
-  "version": "0.1.15",
+  "version": "0.1.17",
   "updated_platforms": [
     "web"
   ],
-  "web_version": "0.1.15",
-  "web_source_commit": "eecc39acdb6df04f18d895d1ecc7a10159279f7a",
-  "web_pck_sha256": "9e746900f12f7e319044ecd5884e9e56dfabb24fe042b6c1ff87e459fe50ae27",
+  "web_version": "0.1.17",
+  "web_source_commit": "7d135da42735d36c998b2015ca8d1b5c474944d0",
+  "web_pck_sha256": "3fa42bf927e587f2ad0922dbf3d3b1fc5c65db0a0b6ae69e4610100f3a263848",
   "web_wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
   "godot_version": "4.7.2.stable.official.ed1daf0bf",
   "android": "not published on this site",
-  "prepared_utc": "2026-10-01T13:20:44.695042+00:00",
-  "web_source_state": "Exact committed runtime files; the working tree differed only in line endings and the order of one project setting",
-  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only"
+  "prepared_utc": "2026-10-09T09:27:25.576610+00:00",
+  "web_source_state": "Exact committed runtime files (git ls-files of 7d135da; the working tree clean but for the gate's .import noise)",
+  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; loaded in headless Chromium at 1280x720 and as a phone (844x390 at 2x) with no console error",
+  "daily_namespace": "demo-16-15-20261009"
 }
