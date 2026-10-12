@@ -47,6 +47,15 @@ body { background: #211f1b; color: #211f1b; overflow: hidden; touch-action: none
 #status.trail .tag, #status.trail .lane, #status.trail .meter { display: none; }
 #status.trail .wordmark { max-height: 8vh; }
 .stamp { position: absolute; right: 16px; bottom: 9px; font-size: 10px; letter-spacing: .08em; color: rgba(33,31,27,.45); }
+/* the home-screen card (an iPhone's Safari gives a page no whole screen) */
+#home-tip { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(33,31,27,.62);
+  font-family: "Trebuchet MS", system-ui, sans-serif; z-index: 10; touch-action: none; }
+#home-tip.shown { display: flex; }
+#home-tip .card { width: min(520px, 86vw); text-align: center; }
+#home-tip h2 { margin: 0 0 8px; font: 700 clamp(18px, 4.6vh, 24px) Georgia, serif; color: #211f1b; }
+#home-tip p { margin: 0 0 14px; font-size: clamp(14px, 3.6vh, 17px); line-height: 1.4; color: #211f1b; }
+#home-tip button { min-width: 160px; min-height: 48px; padding: 10px 26px; border: 3px solid #211f1b; border-radius: 10px; background: #211f1b;
+  color: #f3e8cc; font: 700 16px "Trebuchet MS", system-ui, sans-serif; letter-spacing: .12em; }
 </style>
 <link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
@@ -70,9 +79,10 @@ body { background: #211f1b; color: #211f1b; overflow: hidden; touch-action: none
     <span class="stamp" id="status-stamp"></span>
   </div>
 </div>
+<div id="home-tip" role="dialog" aria-modal="true"><div class="card"><h2 id="home-tip-head"></h2><p id="home-tip-body"></p><button type="button" id="home-tip-ok"></button></div></div>
 <script src="chunk-loader.js"></script><script src="index.js"></script>
 <script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":129591584,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":129929392,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
@@ -104,6 +114,59 @@ const engine = new Engine(GODOT_CONFIG);
   // a screenshot. ?iz shows the last crash again (?iz=2 the one before), or
   // else the session before, or says there is none: the card itself tells
   // which page the phone is running. Nothing leaves the phone.
+  // THE WHOLE SCREEN ON A PHONE (2026-10-12; the user chose it: "İkisini de
+  // kapat"). In a phone's browser the address bar takes a slice of the
+  // height, and the game - laid out on 720 lines - is drawn smaller by that
+  // share: under about 393 CSS pixels of height the pause hub's smallest
+  // lines fall under 12 sp and its buttons under 48 dp. Where the browser
+  // lets a page take the whole screen (Android's Chrome, an iPad) the first
+  // touch asks for it, and holds the screen sideways; a player who leaves it
+  // is not asked again here - the game's settings carry the switch
+  // (scripts/WebPage.gd). An iPhone's Safari gives a page no whole screen:
+  // there one card, once, says how to put the game on the home screen,
+  // where it opens on the whole glass (apple-mobile-web-app-capable).
+  const page = (function () {
+    const coarse = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+    const root = document.documentElement;
+    const ask = root.requestFullscreen || root.webkitRequestFullscreen;
+    const can = !!(ask && (document.fullscreenEnabled || document.webkitFullscreenEnabled));
+    const standalone = window.navigator.standalone === true ||
+      !!(window.matchMedia && window.matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches);
+    const iphone = /iPhone|iPod/.test(navigator.userAgent || '');
+    let asked = false;
+    function whole() {
+      if (asked || !coarse || !can || standalone || document.fullscreenElement || document.webkitFullscreenElement) return;
+      asked = true;
+      try {
+        const hold = () => { try { screen.orientation.lock('landscape').catch(() => {}); } catch (e) {} };
+        const p = ask.call(root, { navigationUI: 'hide' });
+        if (p && p.then) p.then(hold).catch(() => {}); else hold();
+      } catch (e) { /* refused: the settings' switch is still there */ }
+    }
+    document.addEventListener('pointerup', whole, true);
+    document.addEventListener('touchend', whole, true);
+    const SEEN = 'capy.homeTip';
+    function seen() { try { return window.localStorage.getItem(SEEN) === '1'; } catch (e) { return false; } }
+    function homeTip() {
+      if (!coarse || !iphone || can || standalone || seen()) return;
+      const box = document.getElementById('home-tip');
+      document.getElementById('home-tip-head').textContent = turkish ? 'Bütün ekranda oyna' : 'Play on the whole screen';
+      document.getElementById('home-tip-body').textContent = turkish
+        ? 'Safari\u2019de Paylaş düğmesine dokun, sonra \u201cAna Ekrana Ekle\u201d. Oyun ana ekrandan açıldığında adres çubuğu olmaz, yazılar ve düğmeler tam boyunda olur.'
+        : 'In Safari, tap Share, then \u201cAdd to Home Screen\u201d. Opened from the home screen the game has no address bar, and its type and buttons are at full size.';
+      const ok = document.getElementById('home-tip-ok');
+      ok.textContent = turkish ? 'TAMAM' : 'OK';
+      ok.onclick = () => {
+        try { window.localStorage.setItem(SEEN, '1'); } catch (e) {}
+        box.classList.remove('shown');
+        const canvas = document.getElementById('canvas');
+        if (canvas) canvas.focus();
+      };
+      box.classList.add('shown');
+    }
+    return { homeTip: homeTip };
+  }());
+
   const TRAIL = 'iz 2';
   const trail = (function () {
     const KEY = 'capy.trail', PREV = 'capy.trail.prev', CRASHES = 'capy.trail.crashes', OLD = 'capy.trail.crash';
@@ -290,7 +353,7 @@ const engine = new Engine(GODOT_CONFIG);
     percent.textContent = turkish ? '%100' : '100%';
     setTimeout(() => {
       status.classList.add('gone');
-      setTimeout(() => { status.style.display = 'none'; }, 480);
+      setTimeout(() => { status.style.display = 'none'; page.homeTip(); }, 480);
     }, 380);
   }
   function fail(err) {
