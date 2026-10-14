@@ -5,13 +5,13 @@
     "web"
   ],
   "web_version": "0.1.17",
-  "web_source_commit": "a83e0f763bb1aa94d6e2fe89138154116cadd411",
-  "web_pck_sha256": "f41ed7810070132632f3aaa9f80c2a3b2103b5f825c3dd4434aab1518f9171c5",
+  "web_source_commit": "2bea7e2d0dd866dbc24f4bcc64a9d635ad77446f",
+  "web_pck_sha256": "07fc37836d3e41ecb5781bf2da8d262094ac10e6772a38b3617ae9c989adae36",
   "web_wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
   "godot_version": "4.7.2.stable.official.ed1daf0bf",
   "android": "not published on this site",
-  "prepared_utc": "2026-10-14T11:27:10.418914+00:00",
-  "web_source_state": "Committed runtime files of a83e0f7 (git ls-files); the working tree clean but for the gate's .import noise and an untracked probe .uid",
-  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; the packaged site loaded in headless Chromium under /capytan/ as an iPhone held upright (393x852, its island and home bar emulated, Safari without the whole screen) and as an Android phone held upright (412x915, a camera cut-out emulated) - the title, the new game, the first steps, the floor under its one band, the pause hub's Team tab with the floor plan and the settings with the playing hand - and at 1280x720 on a desktop, landscape as before, with no console error",
-  "daily_namespace": "demo-16-15-20261014b"
+  "prepared_utc": "2026-10-14T20:39:07.947462+00:00",
+  "web_source_state": "Committed runtime files of 2bea7e2 (git ls-files); the working tree differs from them only in the line endings of 38 .import files and project.godot, rewritten by the editor's export with the same content, and an untracked probe .uid",
+  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; the packaged site loaded in headless Chromium under /capytan/ as an iPhone held upright (393x852, its island and home bar emulated, Safari without the whole screen) - the title, the settings with the DASH button's side, a new game, the first night's lesson step by step to the shop (the package of 8edc534, which this one differs from by the lesson strip's fade alone, checked again here), the casino with its Back pinned in the header, the bellhop's wave and the pause hub's Team tab - as an Android phone held upright (412x915, a camera cut-out emulated) - a run without the lesson, the orange's notice, the Team tab - and at 1280x720 on a desktop, landscape as before, with no console error",
+  "daily_namespace": "demo-16-15-20261014c"
 }
