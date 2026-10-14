@@ -5,13 +5,13 @@
     "web"
   ],
   "web_version": "0.1.17",
-  "web_source_commit": "51e0363e7069aa5153107e9cac2d88294bde6a44",
-  "web_pck_sha256": "2b3745f16e6ab3b3dbaa4700be4c8c249958a599b363f9a6a9753fa26b6b5abd",
+  "web_source_commit": "a83e0f763bb1aa94d6e2fe89138154116cadd411",
+  "web_pck_sha256": "f41ed7810070132632f3aaa9f80c2a3b2103b5f825c3dd4434aab1518f9171c5",
   "web_wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
   "godot_version": "4.7.2.stable.official.ed1daf0bf",
   "android": "not published on this site",
-  "prepared_utc": "2026-10-14T05:35:39.607707+00:00",
-  "web_source_state": "Committed runtime files of 51e0363 (git ls-files); the working tree clean but for the gate's .import noise and an untracked probe .uid",
-  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; the packaged site loaded in headless Chromium under /capytan/ as an iPhone held upright (393x852, its island and home bar emulated, Safari without the whole screen) and as an Android phone held upright (412x915, a camera cut-out emulated) - the title, the new game, the first steps, the opening act, the floor and the pause hub upright - and at 1280x720 on a desktop, landscape as before, with no console error",
-  "daily_namespace": "demo-16-15-20261014"
+  "prepared_utc": "2026-10-14T11:27:10.418914+00:00",
+  "web_source_state": "Committed runtime files of a83e0f7 (git ls-files); the working tree clean but for the gate's .import noise and an untracked probe .uid",
+  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; the packaged site loaded in headless Chromium under /capytan/ as an iPhone held upright (393x852, its island and home bar emulated, Safari without the whole screen) and as an Android phone held upright (412x915, a camera cut-out emulated) - the title, the new game, the first steps, the floor under its one band, the pause hub's Team tab with the floor plan and the settings with the playing hand - and at 1280x720 on a desktop, landscape as before, with no console error",
+  "daily_namespace": "demo-16-15-20261014b"
 }
