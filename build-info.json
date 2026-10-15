@@ -5,13 +5,13 @@
     "web"
   ],
   "web_version": "0.1.17",
-  "web_source_commit": "efff96c58605eded1e78a9072c1244f1ad4f9a61",
-  "web_pck_sha256": "45aee0422d134902f15d15b0576154521aad140e0bde1c16f3ef3ff714064f8b",
+  "web_source_commit": "0cf4cf69827d977c24e06ec49de2167050735238",
+  "web_pck_sha256": "6aaa521f69af8956c3290941ec4423eb3eb24437ea8ca64a52882f4aca50e142",
   "web_wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
   "godot_version": "4.7.2.stable.official.ed1daf0bf",
   "android": "not published on this site",
-  "prepared_utc": "2026-10-14T23:22:13.681263+00:00",
-  "web_source_state": "Committed runtime files of efff96c (git ls-files); the working tree differs from them only in the line endings of 38 .import files and project.godot, rewritten by the editor's export with the same content, and an untracked probe .uid",
-  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; the packaged site loaded in headless Chromium under /capytan/ as an iPhone held upright (393x852, its island and home bar emulated, Safari without the whole screen) - the title, the settings with the short graphics note and the readouts between their arrows, a new game, the first steps' question, the opening act, the first night's lesson to its star card, the pause hub's Team tab and its settings - as an Android phone held upright (412x915, a camera cut-out emulated) - More options, the register, a run without the lesson, a real orange's notice, the Team tab - and at 1280x720 on a desktop, landscape as before, with no console error",
+  "prepared_utc": "2026-10-15T07:11:19.384926+00:00",
+  "web_source_state": "Committed runtime files of 0cf4cf6 (git ls-files); the working tree differs from them only in the line endings of 38 .import files and project.godot, rewritten by the editor's export with the same content, and an untracked probe .uid",
+  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; the packaged site loaded in headless Chromium under /capytan/ as an iPhone held upright (393x852, its island and home bar emulated, Safari without the whole screen, the iPhone's user agent and with it the game's own audio mix): the opening reel played through its lobby to the menu, where the previous package's stood on its first card for some 20 s until a tap; no console error",
   "daily_namespace": "demo-16-15-20261014d"
 }
