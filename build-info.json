@@ -5,13 +5,13 @@
     "web"
   ],
   "web_version": "0.1.17",
-  "web_source_commit": "0cf4cf69827d977c24e06ec49de2167050735238",
-  "web_pck_sha256": "6aaa521f69af8956c3290941ec4423eb3eb24437ea8ca64a52882f4aca50e142",
+  "web_source_commit": "ea5e6beb5a5ca026cf10cb513d646bac2b437768",
+  "web_pck_sha256": "7b213cbde690b15ba7d9b0381e1878c19315452d29717937b1b7343e36d17451",
   "web_wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
   "godot_version": "4.7.2.stable.official.ed1daf0bf",
   "android": "not published on this site",
-  "prepared_utc": "2026-10-15T07:11:19.384926+00:00",
-  "web_source_state": "Committed runtime files of 0cf4cf6 (git ls-files); the working tree differs from them only in the line endings of 38 .import files and project.godot, rewritten by the editor's export with the same content, and an untracked probe .uid",
-  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; the packaged site loaded in headless Chromium under /capytan/ as an iPhone held upright (393x852, its island and home bar emulated, Safari without the whole screen, the iPhone's user agent and with it the game's own audio mix): the opening reel played through its lobby to the menu, where the previous package's stood on its first card for some 20 s until a tap; no console error",
+  "prepared_utc": "2026-11-13T10:38:35.045443+00:00",
+  "web_source_state": "Committed runtime files of ea5e6be; the working tree differs only in .import line endings, project.godot rewritten by the editor, and untracked tools/probe files",
+  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; the desktop browser now keeps the 1280x720 landscape canvas",
   "daily_namespace": "demo-16-15-20261014d"
 }
