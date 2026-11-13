@@ -5,13 +5,13 @@
     "web"
   ],
   "web_version": "0.1.17",
-  "web_source_commit": "ea5e6beb5a5ca026cf10cb513d646bac2b437768",
-  "web_pck_sha256": "7b213cbde690b15ba7d9b0381e1878c19315452d29717937b1b7343e36d17451",
+  "web_source_commit": "e155daccbdc439fdbde32770993544040e2f77f8",
+  "web_pck_sha256": "bdd0d7bf1820fc2628dab1098356079924d3e555e4aa1e9ed4eac78389008869",
   "web_wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
   "godot_version": "4.7.2.stable.official.ed1daf0bf",
   "android": "not published on this site",
-  "prepared_utc": "2026-11-13T10:38:35.045443+00:00",
-  "web_source_state": "Committed runtime files of ea5e6be; the working tree differs only in .import line endings, project.godot rewritten by the editor, and untracked tools/probe files",
-  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; the desktop browser now keeps the 1280x720 landscape canvas",
+  "prepared_utc": "2026-11-13T10:56:15.910625+00:00",
+  "web_source_state": "Committed runtime files of e155dac; the working tree differs only in .import line endings, project.godot rewritten by the editor, and untracked tools/probe files",
+  "web_built_on": "the laptop, Godot 4.7.2 Web Test preset, mobile/prepare_site.py --web-only; a desktop page no longer takes the phone canvas from the preset's mobile_test feature",
   "daily_namespace": "demo-16-15-20261014d"
 }
